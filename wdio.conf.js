@@ -1,0 +1,37 @@
+import path from 'path';
+
+export const config = {
+    runner: 'local',
+    hostname: 'localhost',
+    port: 4724,
+    specs: [
+        './test/specs/**/*.js'
+    ],
+    exclude: [],
+    // maxInstances: 10,
+    capabilities: [{
+        "appium:automationName": "UiAutomator2",
+        "appium:platformName": "Android",
+        "appium:platformVersion": "15.0",
+        "appium:deviceName": "emulator-5554",
+        "appium:appPackage": "com.akrv.hcm_v3",
+        "appium:appActivity": "com.akrv.hcm_v3.MainActivity",
+        "appium:noReset": true,          // Prefix added
+        "appium:fullReset": false,
+        'appium:app': path.join(process.cwd(), 'app/android/HCM_Build3.7.9_release.apk'),
+        "appium:autoGrantPermissions": true,
+    }],
+    logLevel: 'info',
+    bail: 0,
+    waitforTimeout: 10000,
+    connectionRetryTimeout: 120000,
+    connectionRetryCount: 3,
+    services: ['appium'],
+    path: '/wd/hub',
+    framework: 'mocha',
+    reporters: ['spec'],
+    mochaOpts: {
+        ui: 'bdd',
+        timeout: 60000
+    }
+};
