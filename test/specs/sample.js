@@ -6,9 +6,9 @@ describe('Click an Android Button', () => {
     it('should click a button identified by the class name and handle dynamic screen loading', async () => {
         try {
 
-            // const skip = await waitForElement('android=new UiSelector().className("android.widget.Button")');
-            // await skip.click();
-            // console.log('dddddddddddddd')
+            const skip = await waitForElement('android=new UiSelector().className("android.widget.Button")');
+            await skip.click();
+            console.log('dddddddddddddd')
 
             const inputField = await waitForElement('android=new UiSelector().className("android.widget.EditText")');
             await inputField.click();
