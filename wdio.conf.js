@@ -12,14 +12,15 @@ export const config = {
     capabilities: [{
         "appium:automationName": "UiAutomator2",
         "appium:platformName": "Android",
-        "appium:platformVersion": "15.0",
-        "appium:deviceName": "emulator-5554",
+        "appium:platformVersion": "8.1.0",
+        "appium:deviceName": "Q4SGDUDQKNNVYHSS",
         "appium:appPackage": "com.akrv.hcm_v3",
         "appium:appActivity": "com.akrv.hcm_v3.MainActivity",
         "appium:noReset": true,          // Prefix added
         "appium:fullReset": false,
-        'appium:app': path.join(process.cwd(), 'app/android/HCM_Build3.7.9_release.apk'),
+        'appium:app': path.join(process.cwd(),'app/android/HCM_Build3.7.9_release.apk'),
         "appium:autoGrantPermissions": true,
+        "appium:autoAcceptAlerts": true
     }],
     logLevel: 'info',
     bail: 0,
