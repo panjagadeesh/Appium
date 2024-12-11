@@ -5,10 +5,12 @@ export const config = {
     hostname: 'localhost',
     port: 4724,
     specs: [
-        './test/specs/**/*.js'
+        './test/specs/sample.js',
+        './test/specs/addpunch.js'
+
     ],
-    exclude: [],
-    // maxInstances: 10,
+
+    maxInstances: 1,
     capabilities: [{
         "appium:automationName": "UiAutomator2",
         "appium:platformName": "Android",
@@ -18,9 +20,10 @@ export const config = {
         "appium:appActivity": "com.akrv.hcm_v3.MainActivity",
         "appium:noReset": true,          // Prefix added
         "appium:fullReset": false,
-        // 'appium:app': path.join(process.cwd(),'app/android/HCM_Build3.7.9_release.apk'),
+        'appium:app': path.join(process.cwd(),'app/android/HCM_Build3.7.9_release.apk'),
         "appium:autoGrantPermissions": true,
-        "appium:autoAcceptAlerts": true
+        "appium:autoAcceptAlerts": true,
+
     }],
     logLevel: 'info',
     bail: 0,
