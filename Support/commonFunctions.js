@@ -24,6 +24,7 @@ export const waitForElement = async (selector, timeout = 8000000, interval = 500
 export const tapElement = async (xpathPattern, index) => {
     try {
         const xpath = xpathPattern.replace("{index}", index);
+        await waitForElement(xpath);
         const element = await $(xpath);
         const { x, y } = await element.getLocation();
         const { width, height } = await element.getSize();
@@ -44,6 +45,67 @@ export const tapElement = async (xpathPattern, index) => {
         console.error(`Error performing tap on element with index ${index}:`, error);
     }
 };
+export const tapElementByContains = async (xpath) => {
+    try {
+        let element;
+        let maxScrollAttempts = 5;
+        let scrollAttempts = 0;
+
+        console.log(`Starting to search for the element with XPath: "${xpath}"`);
+
+        while (scrollAttempts < maxScrollAttempts) {
+            console.log(`Attempt ${scrollAttempts + 1} to find the element`);
+            element = await $(xpath);
+
+            if (await element.isDisplayed()) {
+                console.log(`Element found on attempt ${scrollAttempts + 1}`);
+                break;
+            }
+
+            console.log(`Element not found. Scrolling down...`);
+            await driver.execute('mobile: scrollGesture', {
+                left: 100,
+                top: 500,
+                width: 200,
+                height: 400,
+                direction: 'down',
+                percent: 1,
+            });
+            await driver.pause(1000)
+            scrollAttempts++;
+        }
+
+        if (!element || !(await element.isDisplayed())) {
+            throw new Error(`Element with XPath "${xpath}" not visible after ${maxScrollAttempts} scroll attempts`);
+        }
+
+        console.log(`Element found. Calculating its position to perform the tap.`);
+
+        const { x, y } = await element.getLocation();
+        const { width, height } = await element.getSize();
+        const centerX = x + width / 2;
+        const centerY = y + height / 2;
+
+        console.log(`Tapping on the element at position (${centerX}, ${centerY})`);
+
+        await driver.performActions([{
+            type: 'pointer',
+            id: 'finger1',
+            parameters: { pointerType: 'touch' },
+            actions: [
+                { type: 'pointerMove', duration: 0, x: centerX, y: centerY },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pointerUp', button: 0 }
+            ]
+        }]);
+
+        console.log(`Successfully tapped the element with XPath "${xpath}"`);
+    } catch (error) {
+        console.error(`Failed to tap element: ${error.message}`);
+    }
+};
+
+
 
 
 export const setSeekBarTime = async (driver, hour, minute) => {
@@ -87,15 +149,15 @@ export const setSeekBarTime = async (driver, hour, minute) => {
 
         console.log(`Minute SeekBar X: ${minuteLocation.x}, Target X: ${minuteTargetX}`);
 
-        // Enhanced actions for minute SeekBar
+
         await driver.performActions([
             {
                 type: "pointer",
                 id: "finger2",
                 parameters: { pointerType: "touch" },
                 actions: [
-                    { type: "pointerMove", duration: 0, x: minuteLocation.x, y: minuteCenterY }, // Start position
-                    { type: "pointerDown", button: 0 }, // Simulate press
+                    { type: "pointerMove", duration: 0, x: minuteLocation.x, y: minuteCenterY },
+                    { type: "pointerDown", button: 0 },
                     { type: "pointerMove", duration: 1500, x: minuteTargetX, y: minuteCenterY }, // Move
                     { type: "pointerUp", button: 0 }, // Release
                 ],
