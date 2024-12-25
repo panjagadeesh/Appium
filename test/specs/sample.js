@@ -2,7 +2,7 @@
 import { clickModuleByDescription } from '../../Support/commonFunctions'
 import { waitForElement } from '../../Support/commonFunctions'
 import { tapElementByContains } from '../../Support/commonFunctions'
-import { setSeekBarTime } from '../../Support/commonFunctions'
+import { setTimePickerValue } from '../../Support/commonFunctions'
 import { tapElement } from '../../Support/commonFunctions'
 
 describe('webdrieverio appium', () => {
@@ -58,6 +58,11 @@ describe('webdrieverio appium', () => {
 
             const add = await driver.$('//android.widget.Button[@content-desc="Add"]');
             await add.click()
+
+ 
+            await setTimePickerValue(driver, "6");
+
+            
             const addpunch = await driver.$('//android.widget.Button[@content-desc="Add Time"]');
             await addpunch.click()
             
